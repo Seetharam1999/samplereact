@@ -4,8 +4,8 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent'
 import About from './AboutComponent'
 import Dishdetail from './DishDetailedComponent'
-import{View, Platform} from 'react-native';
-import {createStackNavigator,createDrawerNavigator} from 'react-navigation';
+import{View, Platform,Image,StyleSheet, ScrollView,Text} from 'react-native';
+import {createStackNavigator,createDrawerNavigator,DrawerItems,SafeAreaView} from 'react-navigation';
 import {Icon} from 'react-native-elements';
 const MenuNavigator=createStackNavigator({
   Menu:{screen:Menu,
@@ -87,6 +87,23 @@ const AboutNavigator = createStackNavigator({
   })
 });
 
+const ContentDrawerCustemNavigator=(props)=>(
+  <ScrollView>
+    <SafeAreaView style={styles.Container} 
+    forceInset={{top:'always',horizontal:'never'}}>
+      <View style={styles.drawerHeader}>
+        <View style={{flex:1}}>
+            <Image source={require('./images/logo.png')} style={styles.drawerImage}/>
+
+          </View>
+          <View style={{flex:2}}><Text style={styles.Headertext}>
+            Ristorante Con Fusion
+            </Text></View>
+        </View>
+        <DrawerItems {...props}/>
+      </SafeAreaView>
+    </ScrollView>
+);
 
 const MainNavigator = createDrawerNavigator({
   Home: 
@@ -152,7 +169,8 @@ const MainNavigator = createDrawerNavigator({
       
     }
 }, {
-drawerBackgroundColor: '#D1C4E9'
+drawerBackgroundColor: '#D1C4E9',
+contentComponent:ContentDrawerCustemNavigator
 });
 
 class Main extends Component {
@@ -161,11 +179,37 @@ render() {
  
     return (
         
-        <View style={{flex:1,paddingTop:Platform.OS==='ios'?0:10}}>
+        <View style={{flex:1, paddingTop:Platform.OS==='ios'?0:10}}>
             <MainNavigator />
         </View>
     );
   }
 }
+
+const styles=StyleSheet.create({
+  Container:{
+    flex:1
+  },
+  drawerHeader:{
+    backgroundColor:'#512DA8',
+    height:140,
+    alignItems:'center',
+    justifyContent:'center',
+    flex:1,
+    flexDirection:'row'
+  },
+  Headertext:{
+    color:'white',
+    fontSize:'24',
+    fontWeight:'bold'
+  },
+  drawerImage:{
+    margin:10,
+    width:80,
+    height:60
+  }
+
+
+});
   
 export default Main;
