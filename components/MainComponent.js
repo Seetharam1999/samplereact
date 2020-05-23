@@ -4,6 +4,7 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent'
 import About from './AboutComponent'
 import Dishdetail from './DishDetailedComponent'
+import Reservation from './ReservationComponent';
 import{View, Platform,Image,StyleSheet, ScrollView,Text} from 'react-native';
 import {createStackNavigator,createDrawerNavigator,DrawerItems,SafeAreaView} from 'react-navigation';
 import {Icon} from 'react-native-elements';
@@ -31,7 +32,7 @@ const MenuNavigator=createStackNavigator({
     navigationOptions:({navigation})=>({
         headerLeft:
           <Icon name="menu" size={24}
-              color="White"
+              color="white"
               onPress={()=>navigation.toggleDrawer()}
           />
         
@@ -63,7 +64,7 @@ const HomeNavigator = createStackNavigator({
     headerTintColor: "#fff" ,
     headerLeft:
           <Icon name="menu" size={24}
-              color="White"
+              color="white"
               onPress={()=>navigation.toggleDrawer()}
           />
   })
@@ -82,7 +83,7 @@ const ContactNavigator = createStackNavigator({
     headerTintColor: "#fff" ,
     headerLeft:
           <Icon name="menu" size={24}
-              color="White"
+              color="white"
               onPress={()=>navigation.toggleDrawer()}
           />
   })
@@ -100,7 +101,25 @@ const AboutNavigator = createStackNavigator({
     headerTintColor: "#fff",
     headerLeft:
           <Icon name="menu" size={24}
-              color="White"
+              color="white"
+              onPress={()=>navigation.toggleDrawer()}
+          />
+  })
+});
+const ReservationNavigator = createStackNavigator({
+  Home: { screen: Reservation }
+}, {
+  navigationOptions: ({ navigation }) => ({
+    headerStyle: {
+        backgroundColor: "#512DA8"
+    },
+    headerTitleStyle: {
+        color: "#fff"            
+    },
+    headerTintColor: "#fff" ,
+    headerLeft:
+          <Icon name="menu" size={24}
+              color="white"
               onPress={()=>navigation.toggleDrawer()}
           />
   })
@@ -186,6 +205,21 @@ const MainNavigator = createDrawerNavigator({
           )
         }
       
+    },
+    Reservation:{
+      screen:ReservationNavigator,
+      navigationOptions:{
+        title:'Reservation Table',
+        drawerLabel:'Reservation Table',
+        drawerIcon:({tintColor})=>(
+          <Icon 
+            name="cutlery"
+            type="font-awesome"
+            size={24}
+            iconStyle={{color:tintColor}}
+            />
+        )
+      }
     }
 }, {
 drawerBackgroundColor: '#D1C4E9',
@@ -202,7 +236,9 @@ class Main extends Component {
     this.props.fetchPromos();
     this.props.fetchLeaders();
   }
-  
+  componentWillReceiveProps(){
+
+  }
 render() {
  
     return (
@@ -228,7 +264,7 @@ const styles=StyleSheet.create({
   },
   Headertext:{
     color:'white',
-    fontSize:'24',
+    fontSize:24,
     fontWeight:'bold'
   },
   drawerImage:{

@@ -7,6 +7,7 @@ const styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         flex:1,
+        flexWrap:'wrap-reverse'
 
     },
     loaddingText:{
