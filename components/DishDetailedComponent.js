@@ -22,9 +22,9 @@ function RenderDish(props) {
             return(
                 <Card 
                 title={dish.name}
-                image={{uri:baseUrl+dish.image}}
+             
                 >
-                    <Image source={require('./images/logo.png')}/>
+                   
                     <Text style={{margin: 10}}>
                         {dish.description}
                                       </Text>
