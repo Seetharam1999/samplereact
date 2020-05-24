@@ -66,7 +66,7 @@ class DishDetail extends Component {
 
       if (dish != null) {
         return (
-          <Card featuredTitle={dish.name} image={{ uri: baseUrl + dish.image }}>
+          <Card featuredTitle={dish.name} >
             <Text style={{ margin: 10 }}>{dish.description}</Text>
             <View
               style={{
@@ -155,8 +155,7 @@ class DishDetail extends Component {
           transparent={false}
           visible={this.state.showModal}
           onDismiss={() => this.toggleModal(_this)}
-          onRequestClose={() => this.toggleModal(_this)}
-        >
+          onRequestClose={() => this.toggleModal(_this)}>
           <View style={styles.modal}>
             <Rating
               showRating
