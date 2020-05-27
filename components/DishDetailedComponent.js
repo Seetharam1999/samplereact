@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Button,
   Alert,
+  PanResponder
 } from "react-native";
 import { Card, Icon, Rating, Input } from "react-native-elements";
 
@@ -61,23 +62,75 @@ class DishDetail extends Component {
 
   render() {
     let _this = this;
+    
     const RenderDish = (props) => {
+    this.handleViewRef = ref => this.view = ref;
       const dish = props.dish;
+        const recognizeDrag=({moveX,moveY,dx,dy})=>{
+          if(dx<-200)
+             return true;
+          else return false;
+        }
+        const recognizeComment=({moveX,moveY,dx,dy})=>{
+          if(dx>200)
+          return true;
+          else return false;
+        }
+       
+        const panResponder=PanResponder.create({
+          onStartShouldSetPanResponder:(e,gestrueState)=>{
+              return true;
+          },
+          onPanResponderGrant: () => {
+            this.view.rubberBand(1000).then(endState => 
+              console.log(endState.finished ? 'finished' : 'cancelled'));
+            
+            },
+            onPanResponderMove:(e,gestrueState)=>{
+              if(recognizeComment(gestrueState))
+              
+                return this.toggleModal(_this);
+            },
+          onPanResponderEnd:(e,gestrueState)=>{
+            if(recognizeDrag(gestrueState))
+              Alert.alert(
+                'Add favorites',
+                'Are you sure you wish to addd'+dish.name+'to your favorites',
+                [
+                  {
+                    text:'cancel',
+                    onPress:()=>console.log('Cancel Pressed'),
+                    style:'cancel'
+                  },
+                  {
+                    text:'Ok',
+                    onPress:()=>props.favorite ? console.log('Already favorite'):props.onPress(),
+                    style:'ok'
+
+                  }
+                ],
+                {cancelable:false}
+              )
+              return true;
+          }
+        })
 
       if (dish != null) {
         return (
-          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>                
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+             ref={this.handleViewRef}
+            {...panResponder.panHandlers}>                
  
-          <Card featuredTitle={dish.name} >
+          <Card title={dish.name} 
+          >
             <Text style={{ margin: 10 }}>{dish.description}</Text>
             <View
               style={{
                 flex: 1,
                 flexDirection: "row",
                 justifyContent: "center",
-              }}
-            >
-              <Icon
+              }}>
+            <Icon
                 raised
                 reverse
                 name={props.favorite ? "heart" : "heart-o"}
@@ -89,7 +142,7 @@ class DishDetail extends Component {
                     : props.onPress()
                 }
               />
-              <Icon
+            <Icon
                 raised
                 reverse
                 name="pencil"
