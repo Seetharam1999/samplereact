@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Text,View} from 'react-native';
 import { Card } from 'react-native-elements';
-
+import * as Animatable from 'react-native-animatable';
 
 class Contact extends Component{
     static navigationOptions={
@@ -13,6 +13,7 @@ class Contact extends Component{
     {
         return (
             <View>
+ <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>                
             <Card title='Contact Information'>
                 <Text style={{paddingTop:20}}>121, Clear Water Bay Road</Text>
                 <Text style={{paddingTop:20}}>Clear Water Bay, Kowloon</Text>
@@ -23,6 +24,7 @@ class Contact extends Component{
                 Email:confusion@food.net</Text>
                  
                 </Card>
+                </Animatable.View>
 </View>
         );
     }

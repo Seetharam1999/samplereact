@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start & json-server ./json-server/db.json --watch -p 3001 -d 2000",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -12,6 +12,7 @@
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+    "react-native-animatable": "^1.2.4",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^2.0.0",
     "react-native-swipeout": "^2.3.3",

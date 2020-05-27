@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList ,Text} from 'react-native';
 import { Tile } from 'react-native-elements';
-
-
+import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
@@ -22,7 +21,8 @@ title:"Menu"
     const renderMenuItem = ({item, index}) => {
 
         return (
-                
+            <Animatable.View animation="fadeInRightBig" duration={2000}>                
+   
             <Tile
             key={index}
             title={item.name}
@@ -31,6 +31,7 @@ title:"Menu"
             onPress={() => navigate('Dishdetail', { dishId: item.id })}
             imageSrc={{ uri: baseUrl + item.image}}
             />
+    </Animatable.View>
         );
     };
 const{navigate}=this.props.navigation;
