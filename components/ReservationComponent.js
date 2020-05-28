@@ -49,8 +49,8 @@ class Reservation extends Component{
         this.setState({
             guests: 1,
             smoking: false,
-            date: '',
-            showModal: false
+            date: ''
+            
         });
     }
     

@@ -6,6 +6,7 @@ import About from './AboutComponent'
 import Dishdetail from './DishDetailedComponent'
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
+import sampleCard from './sampleCard';
 import{View, Platform,Image,StyleSheet, ScrollView,Text} from 'react-native';
 import {createStackNavigator,createDrawerNavigator,DrawerItems,SafeAreaView} from 'react-navigation';
 import {Icon} from 'react-native-elements';
@@ -109,6 +110,25 @@ const AboutNavigator = createStackNavigator({
 });
 const ReservationNavigator = createStackNavigator({
   Home: { screen: Reservation }
+}, {
+  navigationOptions: ({ navigation }) => ({
+    headerStyle: {
+        backgroundColor: "#512DA8"
+    },
+    headerTitleStyle: {
+        color: "#fff"            
+    },
+    headerTintColor: "#fff" ,
+    headerLeft:
+          <Icon name="menu" size={24}
+              color="white"
+              onPress={()=>navigation.toggleDrawer()}
+          />
+  })
+});
+
+const sampleNavigator = createStackNavigator({
+  Home: { screen: sampleCard }
 }, {
   navigationOptions: ({ navigation }) => ({
     headerStyle: {
@@ -244,6 +264,21 @@ const MainNavigator = createDrawerNavigator({
       navigationOptions:{
         title:'Reservation Table',
         drawerLabel:'Reservation Table',
+        drawerIcon:({tintColor})=>(
+          <Icon 
+            name="cutlery"
+            type="font-awesome"
+            size={24}
+            iconStyle={{color:tintColor}}
+            />
+        )
+      }
+    },
+    sampleCard:{
+      screen:sampleNavigator,
+      navigationOptions:{
+        title:'sample Card',
+        drawerLabel:'sample Card',
         drawerIcon:({tintColor})=>(
           <Icon 
             name="cutlery"
