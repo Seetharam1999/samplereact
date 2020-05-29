@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Button,
   Alert,
-  PanResponder
+  PanResponder,Share
 } from "react-native";
 import { Card, Icon, Rating, Input } from "react-native-elements";
 
@@ -115,6 +115,15 @@ class DishDetail extends Component {
           }
         })
 
+        const shardDish=(title,message,url)=>{
+          Share.share({
+            title:title,
+            message:title+':'+message+':'+url,
+            url:url
+          },{
+            dialogTitle:'Share'+title 
+          })
+        }
       if (dish != null) {
         return (
           <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
@@ -149,6 +158,14 @@ class DishDetail extends Component {
                 type="font-awesome"
                 color="#512DA8"
                 onPress={() => props.toggleModal(_this)}
+              />
+              <Icon
+                raised
+                reverse
+                name="share"
+                type="font-awesome"
+                color="#512DA8"
+                onPress={() =>shardDish(dish.name,dish.description,baseUrl+dish.image)}
               />
             </View>
           </Card>

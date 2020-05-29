@@ -103,7 +103,7 @@ class sampleCard extends Component {
             {...panResponder.panHandlers}>                
  
           <Card title="sample Dish"
-
+              image={require('./images/uthappizza.png')}
           >
             <Text style={{ margin: 10 }}>"helo hoejdghf
             jdhfjd
