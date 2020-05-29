@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View,  StyleSheet,ScrollView } from 'react-native';
 import {  Icon, Input, CheckBox,Button,Image} from 'react-native-elements';
-import { Asset,ImageManipulator} from 'expo';
+import { Asset} from 'expo';
+import *as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import *as Permissions from 'expo-permissions';
 import *as SecureStore from 'expo-secure-store';
@@ -142,11 +143,11 @@ class RegisterTab extends Component {
         let processedImage= await ImageManipulator.manipluateAsync(
             imageUri,[
                {
-                resize:{width:400}
+                resize:{width:400,height:300}
                 }
                 
             ],
-            {format:'png'}
+            {format:ImageManipulator.SaveFormat.PNG}
         );
         this.setState({
             imageUrl:processedImage.uri
