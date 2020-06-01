@@ -119,8 +119,27 @@ class RegisterTab extends Component {
             lastname: '',
             email: '',
             remember: false,
-            imageUrl: baseUrl + 'images/logo.png'
+            imageUrl: './images/logo.png'
         }
+    }
+    getImageFromgallery=async()=>{
+        try{
+        let image=await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+
+        });
+        if(!image.cancelled){
+            console.log(image);
+            this.processImage(image);
+        }
+    }
+    catch(E)
+    {
+        console.log(E);
+    }
     }
 
     getImageFromCamera = async () => {
@@ -134,14 +153,15 @@ class RegisterTab extends Component {
             });
             if (!capturedImage.cancelled) {
                 console.log(capturedImage);
-                this.processImage( capturedImage.uri );
+                this.processImage(capturedImage);
             }
         }
 
     }
     processImage=async(imageUri)=>{
-        let processedImage= await ImageManipulator.manipluateAsync(
-            imageUri,[
+        try{
+        let processedImage= await ImageManipulator.manipulateAsync(
+            imageUri.uri||imageUri.localUri,[
                {
                 resize:{width:400,height:300}
                 }
@@ -152,7 +172,14 @@ class RegisterTab extends Component {
         this.setState({
             imageUrl:processedImage.uri
         })
+        console.log(this.state.imageUrl);
     }
+    catch(E)
+    {
+        console.log(E.type);
+    }
+}
+
 
     static navigationOptions = {
         title: 'Register',
@@ -183,9 +210,16 @@ class RegisterTab extends Component {
                         loadingIndicatorSource={require('./images/logo.png')}
                         style={styles.image} 
                         />
+                        
                     <Button
                         title="Camera"
+                        
                         onPress={this.getImageFromCamera}
+                        />
+                        <Button
+                        title="Gallery"
+                        
+                        onPress={this.getImageFromgallery}
                         />
                 </View>
                 <Input
@@ -205,7 +239,7 @@ class RegisterTab extends Component {
                 <Input
                     placeholder="First Name"
                     leftIcon={{ type: 'font-awesome', name: 'user-o' }}
-                    onChangeText={(lastname) => this.setState({firstname})}
+                    onChangeText={(firstname) => this.setState({firstname})}
                     value={this.state.firstname}
                     containerStyle={styles.formInput}
                     />
@@ -260,13 +294,17 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        margin: 20,
+        justifyContent:'space-between',
+       
+
     },
     image: {
       margin: 10,
       width: 80,
       height: 60
     },
+    
     formInput: {
         margin: 20
     },

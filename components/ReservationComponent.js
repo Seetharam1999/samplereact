@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {View,Text,ScrollView,StyleSheet,Picker,Switch,Button,Modal, Alert} from 'react-native';
-import { Card} from 'react-native-elements';
+import * as Calendar from 'expo-calendar';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
 import {Notifications} from 'expo';
@@ -20,8 +20,39 @@ class Reservation extends Component{
     static navigationOptions={
         title:"Reserve Table"
     };
-   
-
+    async obtainCalenderPermission(){
+        const { status } = await Calendar.requestCalendarPermissionsAsync();
+        if (status === 'granted') {
+            const calendars = await Calendar.getCalendarsAsync();
+            console.log('Your accessible calendars:' + calendars);
+        }
+        return status;
+    }
+    
+    async addReservationToCalendar(){
+       const status= await this.obtainCalenderPermission();
+       const calendars = await Calendar.getCalendarsAsync();
+       const calendar = calendars.filter((cal) => cal.source.isLocalAccount);
+       let startDateMs = Date.parse(this.state.date);
+       let endDateMs = startDateMs + (2 * 60 * 60 * 1000);
+       try {
+        const event = await Calendar.createEventAsync(calendar[0].id, { 
+            'endDate': new Date(endDateMs), 
+            'startDate': new Date(startDateMs), 
+            'title': 'Con Fusion Table Reservation',
+            'timeZone': 'Asia/Hong_Kong',
+            'location': '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+        })
+        .then( event => {
+          console.log('success',event);
+            })
+      .catch( error => {
+          console.log('failure',error);
+          });
+    } catch (e) {
+        console.log(e);
+    }
+    }
     handleReservation() {
         
         Alert.alert(
@@ -37,6 +68,7 @@ class Reservation extends Component{
                 {
                     text:'Ok',
                     onPress:()=>{
+                        this.addReservationToCalendar();
                         this.presentLocalNotification(this.state.date);
                         console.log(JSON.stringify(this.state));this.resetForm();},
                     style:'ok'
@@ -47,7 +79,7 @@ class Reservation extends Component{
                 cancelable:false
             }
         )
-       
+     
     }
 
     resetForm() {
@@ -73,7 +105,7 @@ class Reservation extends Component{
         await this.obtainNotificationPermissions();
         Notifications.presentLocalNotificationAsync({
             title:"Your Reservation",
-            body:"Reservation fro" +date+"requested",
+            body:"Reservation for " +date+" requested",
             ios:{
                 sound:true
             },
@@ -124,7 +156,7 @@ class Reservation extends Component{
                     <DatePicker
                     style={{flex: 2, marginRight: 20}}
                     date={this.state.date}
-                    format='YYYY-MM-DD:HH-MM-SS'
+                    format=''
                     mode="datetime"
                     placeholder="select date and Time"
                     minDate="2017-01-01"

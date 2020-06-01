@@ -8,7 +8,8 @@ import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
 import sampleCard from './sampleCard';
 import Login from './LoginComponent';
-import{View, Platform,Image,StyleSheet, ScrollView,Text,NetInfo,ToastAndroid} from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import{View, Platform,Image,StyleSheet, ScrollView,Text,ToastAndroid} from 'react-native';
 import {createStackNavigator,createDrawerNavigator,DrawerItems,SafeAreaView} from 'react-navigation';
 import {Icon} from 'react-native-elements';
 
@@ -338,14 +339,15 @@ class Main extends Component {
     this.props.fetchComments();
     this.props.fetchPromos();
     this.props.fetchLeaders();
-    
-    NetInfo.getConnectioninfo()
-      .then((connectionInfo)=>
-      {
-        ToastAndroid.show('Initial Network Connectivity Type:'
-        +connectionInfo.type+'effectiveType:'+connectionInfo.effctiveType,
+   
+   
+    NetInfo.fetch().then(connectionInfo => {
+      ToastAndroid.show('Initial Network Connectivity Type:'
+        +connectionInfo.type+'\t is Connected:'+connectionInfo.isConnected,
         ToastAndroid.LONG )
-      });
+    });
+    
+    
       NetInfo.addEventListener('connectionChange',this.handleConnectivityChange);
   }
   componentWillUnmount(){
