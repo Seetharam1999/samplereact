@@ -1,1 +1,1 @@
-# react-native-test
+# Coursera Native app development
